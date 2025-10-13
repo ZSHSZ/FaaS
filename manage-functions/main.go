@@ -1,56 +1,59 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"io"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/rest"
 	"net/http"
 	"os"
 	"time"
 
-	corev1 "k8s.io/api/core/v1"
+	"awesomeProject/KnativeLogic"
+	"awesomeProject/KuberNSLogic"
+
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/rest"
+	clienKnative "knative.dev/serving/pkg/client/clientset/versioned"
 )
 
-var connectState = connect()
+var connectStateKuber, connectStateKnative = connect() // Во всех пакетах
 
 /* Main connection to kuber function*/
-func connect() *kubernetes.Clientset {
+func connect() (*kubernetes.Clientset, *clienKnative.Clientset) {
 	config, err := rest.InClusterConfig()
 	if err != nil {
-    // Handle error, e.g., if not running in a cluster
-	}
-	clientset, err := kubernetes.NewForConfig(config)
-	return clientset
-}
-
-/* Set namespace by string */
-func setNamespace(namespace string) {
-
-	if connectState == nil {
-		panic("ConnectState is nil")
-	}
-	nsName := &corev1.Namespace{
-		ObjectMeta: metav1.ObjectMeta{
-			Name: namespace,
-		},
+		panic(err.Error())
 	}
 
-	_, err := connectState.CoreV1().Namespaces().Create(context.Background(), nsName, metav1.CreateOptions{})
+	// create the clientset
+	clientSetKuber, err := kubernetes.NewForConfig(config)
 	if err != nil {
-		return
+		panic(err.Error())
 	}
+	clientSetKnative, err := clienKnative.NewForConfig(config)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return clientSetKuber, clientSetKnative
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
+func createNSHandler(w http.ResponseWriter, r *http.Request) {
 	t1 := time.Now()
 	if r.Method == "POST" {
 		body, _ := io.ReadAll(r.Body)
 		receivedString := string(body)
-		setNamespace(receivedString)
+		KuberNSLogic.SetNamespace(receivedString, connectStateKuber)
+	}
+	t2 := time.Now()
+	fmt.Println(t2.Sub(t1))
+}
 
+func createKnativeHandler(w http.ResponseWriter, r *http.Request) {
+	t1 := time.Now()
+	if r.Method == "POST" {
+		body, _ := io.ReadAll(r.Body)
+		receivedString := string(body)
+		KnativeLogic.CreateKnativeServises(receivedString, connectStateKnative)
 	}
 	t2 := time.Now()
 	fmt.Println(t2.Sub(t1))
@@ -59,7 +62,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", handler)
+	mux.HandleFunc("/", createNSHandler)
+	mux.HandleFunc("/create", createKnativeHandler)
 
 	err := http.ListenAndServe(":3333", mux)
 	if err == nil {
