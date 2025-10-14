@@ -7,7 +7,10 @@ import (
 	"net/http"
 	"os"
 	"time"
-
+	"flag"
+	"path/filepath"
+	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/client-go/util/homedir"
 	"awesomeProject/KnativeLogic"
 	"awesomeProject/KuberNSLogic"
 
@@ -19,7 +22,20 @@ var connectStateKuber, connectStateKnative = connect() // Во всех паке
 
 /* Main connection to kuber function*/
 func connect() (*kubernetes.Clientset, *clienKnative.Clientset) {
-	config, err := rest.InClusterConfig()
+	var config *rest.Config
+	var err error
+	if os.Getenv("DEBUG") == "true" {
+		var kubeconfig *string
+		if home := homedir.HomeDir(); home != "" {
+			kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
+		} else {
+			kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
+		}
+		flag.Parse()
+		config, err = clientcmd.BuildConfigFromFlags("", *kubeconfig)
+	} else {
+		config, err = rest.InClusterConfig()
+	}
 	if err != nil {
 		panic(err.Error())
 	}
