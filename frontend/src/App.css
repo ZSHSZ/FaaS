@@ -1,0 +1,578 @@
+/* src/App.css */
+
+/* Базовые стили для всего документа */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(to bottom, #4B0082, #0d0c1d);
+  min-height: 100vh;
+  /* УДАЛЯЕМ: display: flex; */
+  /* УДАЛЯЕМ: justify-content: center; */
+  /* УДАЛЯЕМ: align-items: center; */
+  /* МЕНЯЕМ: overflow: hidden; */
+  overflow-x: hidden; /* Только горизонтальный скролл скрываем, если не нужен */
+  overflow-y: auto;   /* Вертикальный скролл разрешен, если контент больше 100vh */
+}
+
+/* Стили для RegisterPage */
+.register-page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Теперь этот wrapper отвечает за min-height и центрирование */
+  width: 100%;
+}
+
+.register-form-container {
+  /* Градиентный фон для карточки: от DarkSlateBlue до космического черного */
+  background: linear-gradient(to bottom, #483D8B, #0d0c1d);
+  padding: 40px 30px; /* Отступы внутри формы */
+  border-radius: 20px; /* Закругленные углы */
+  /* Усиленное белое свечение */
+  box-shadow: 0 0 60px rgba(255, 255, 255, 0.4);
+  text-align: center;
+  width: 350px; /* Фиксированная ширина формы */
+  display: flex;
+  flex-direction: column; /* Элементы внутри стекаются вертикально */
+  position: relative; /* Для позиционирования нижней секции */
+  overflow: hidden; /* Обрезает содержимое, которое выходит за границы (например, нижнюю секцию) */
+  box-sizing: border-box; /* Расчет ширины с учетом padding */
+}
+
+.register-title {
+  color: white; /* Цвет текста заголовка - оставлен белым для контраста */
+  margin-bottom: 30px; /* Отступ снизу */
+  font-size: 2.2em; /* Размер шрифта */
+  font-weight: 600; /* Жирность шрифта */
+}
+
+.register-form .form-group {
+  margin-bottom: 20px; /* Отступ между полями ввода */
+  text-align: left; /* Выравнивание элементов внутри группы */
+}
+
+.register-form input[type="text"],
+.register-form input[type="email"],
+.register-form input[type="password"] {
+  width: 100%; /* Занимает всю доступную ширину родителя */
+  padding: 12px 15px; /* Внутренние отступы */
+  border: none; /* Без рамки */
+  border-radius: 8px; /* Закругленные углы */
+  background-color: #e0e0e0; /* СВЕТЛО-СЕРЫЙ ФОН ПОЛЕЙ ВВОДА */
+  color: #333; /* ТЕМНЫЙ ТЕКСТ ДЛЯ ПОЛЕЙ */
+  font-size: 1em; /* Размер шрифта */
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Внутренняя тень */
+  outline: none; /* Убирает обводку при фокусе по умолчанию */
+  box-sizing: border-box; /* Расчет ширины с учетом padding */
+}
+
+.register-form input::placeholder {
+  color: #999; /* СРЕДНЕ-СЕРЫЙ ЦВЕТ ПЛЕЙСХОЛДЕРА */
+}
+
+.register-form input:focus {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 0 0 2px #8a4bff; /* Эффект фокуса */
+}
+
+.register-button {
+  width: 100%; /* Занимает всю ширину */
+  padding: 15px; /* Внутренние отступы */
+  /* ГРАДИЕНТНЫЙ ФОН КНОПКИ РЕГИСТРАЦИИ: от DarkSlateBlue до Indigo */
+  background: linear-gradient(to bottom, #483D8B, #4B0082);
+  color: white; /* Цвет текста */
+  border: none; /* Без рамки */
+  border-radius: 8px; /* Закругленные углы */
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Плавный переход при наведении */
+  margin-top: 10px; /* Отступ сверху */
+  font-weight: 500;
+}
+
+.register-button:hover:not(:disabled) {
+  /* ЧУТЬ БОЛЕЕ ТЕМНЫЙ ГРАДИЕНТ DarkSlateBlue до Indigo ПРИ НАВЕДЕНИИ */
+  background: linear-gradient(to bottom, #3A306F, #3C0068);
+}
+
+.register-button:disabled {
+  background-color: #5b4b7a; /* Цвет для неактивной кнопки */
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #ff6b6b; /* Красный цвет для сообщений об ошибках */
+  font-size: 0.9em;
+  margin-top: 5px;
+  text-align: left;
+}
+
+/* Стили для нижней секции с кнопкой "Login" на странице регистрации (если применимо) */
+.login-bottom-section {
+  background-color: #e0e0e0; /* Тот же светло-серый фон, что и у полей ввода */
+  padding: 0; /* Убираем внутренние отступы, чтобы кнопка растянулась */
+  border-bottom-left-radius: 20px; /* Закругленные углы только снизу */
+  border-bottom-right-radius: 20px;
+  /* Отрицательный маржин, чтобы секция "выходила" из основной формы,
+     но при этом была привязана к ее ширине и центрированию */
+  margin: 30px -30px -40px;
+  box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.1); /* Тень сверху */
+  position: relative;
+  z-index: 1; /* Чтобы быть поверх других теней, если есть */
+}
+
+.login-switch-button {
+  width: 100%; /* Растягиваем кнопку на всю ширину секции */
+  padding: 20px 30px; /* Переносим отступы внутрь самой кнопки */
+  background-color: transparent; /* Делаем фон кнопки прозрачным, чтобы видеть фон секции */
+  color: #333; /* ТЕМНЫЙ ТЕКСТ КНОПКИ LOGIN */
+  border: none; /* Убираем границу кнопки */
+  border-radius: 0; /* Обнуляем радиус, чтобы не конфликтовал с радиусом секции */
+  border-bottom-left-radius: 20px; /* Применяем радиус к кнопке */
+  border-bottom-right-radius: 20px; /* Применяем радиус к кнопке */
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Плавный переход */
+  font-weight: 500;
+  box-sizing: border-box; /* Важно, чтобы padding не выходил за width */
+}
+
+.login-switch-button:hover:not(:disabled) {
+  background-color: #d0d0d0; /* Делаем фон кнопки немного темнее при наведении, чтобы был эффект */
+  color: #111; /* ЕЩЕ БОЛЕЕ ТЕМНЫЙ ТЕКСТ ПРИ НАВЕДЕНИИ */
+}
+
+.login-switch-button:disabled {
+  background-color: transparent; /* Прозрачный фон для неактивной кнопки */
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* Стилизация для инпута с ошибкой */
+.input-error {
+  border: 1px solid #ff6b6b !important; /* Красная граница для ошибок */
+}
+
+/* ---------------------------------------------------- */
+/* Стили для LOGINPAGE */
+/* ---------------------------------------------------- */
+
+/* .login-page-wrapper уже определен ранее, но для ясности */
+.login-page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.login-form {
+  /* Градиентный фон для карточки: от DarkSlateBlue до космического черного, как у формы регистрации */
+  background: linear-gradient(to bottom, #483D8B, #0d0c1d);
+  padding: 40px 30px; /* Отступы внутри формы */
+  border-radius: 20px; /* Закругленные углы */
+  /* Усиленное белое свечение */
+  box-shadow: 0 0 60px rgba(255, 255, 255, 0.4);
+  text-align: center;
+  width: 350px; /* Фиксированная ширина формы */
+  display: flex;
+  flex-direction: column; /* Элементы внутри стекаются вертикально */
+  box-sizing: border-box; /* Расчет ширины с учетом padding */
+}
+
+.login-form h2 {
+  color: white; /* Цвет текста заголовка - оставлен белым для контраста */
+  margin-bottom: 30px; /* Отступ снизу */
+  font-size: 2.2em; /* Размер шрифта */
+  font-weight: 600; /* Жирность шрифта */
+}
+
+.login-form .form-group {
+  margin-bottom: 20px; /* Отступ между полями ввода */
+  text-align: left; /* Выравнивание элементов внутри группы */
+}
+
+.login-form label {
+  display: block; /* Каждая метка на новой строке */
+  color: white; /* Белый цвет для меток */
+  margin-bottom: 8px; /* Отступ под меткой */
+  font-size: 0.95em;
+  font-weight: 500;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+  width: 100%; /* Занимает всю доступную ширину родителя */
+  padding: 12px 15px; /* Внутренние отступы */
+  border: none; /* Без рамки */
+  border-radius: 8px; /* Закругленные углы */
+  background-color: #e0e0e0; /* СВЕТЛО-СЕРЫЙ ФОН ПОЛЕЙ ВВОДА */
+  color: #333; /* ТЕМНЫЙ ТЕКСТ ДЛЯ ПОЛЕЙ */
+  font-size: 1em; /* Размер шрифта */
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Внутренняя тень */
+  outline: none; /* Убирает обводку при фокусе по умолчанию */
+  box-sizing: border-box; /* Расчет ширины с учетом padding */
+}
+
+.login-form input::placeholder {
+  color: #999; /* СРЕДНЕ-СЕРЫЙ ЦВЕТ ПЛЕЙСХОЛДЕРА */
+}
+
+.login-form input:focus {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 0 0 2px #8a4bff; /* Эффект фокуса */
+}
+
+.login-form .error-message {
+  color: #ff6b6b; /* Красный цвет для сообщений об ошибках */
+  font-size: 0.9em;
+  margin-top: 5px;
+  text-align: left;
+}
+
+.login-form .login-button {
+  width: 100%; /* Занимает всю ширину */
+  padding: 15px; /* Внутренние отступы */
+  /* ГРАДИЕНТНЫЙ ФОН КНОПКИ: от DarkSlateBlue до Indigo (как у кнопки регистрации) */
+  background: linear-gradient(to bottom, #483D8B, #4B0082);
+  color: white; /* Цвет текста */
+  border: none; /* Без рамки */
+  border-radius: 8px; /* Закругленные углы */
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Плавный переход при наведении */
+  margin-top: 10px; /* Отступ сверху */
+  font-weight: 500;
+}
+
+.login-form .login-button:hover:not(:disabled) {
+  /* ЧУТЬ БОЛЕЕ ТЕМНЫЙ ГРАДИЕНТ DarkSlateBlue до Indigo ПРИ НАВЕДЕНИИ */
+  background: linear-gradient(to bottom, #3A306F, #3C0068);
+}
+
+.login-form .login-button:disabled {
+  background-color: #5b4b7a; /* Цвет для неактивной кнопки */
+  cursor: not-allowed;
+}
+
+/* Если кнопки Войти и Регистрация находятся в одном div, им может понадобиться margin-top */
+.login-form div:last-of-type button:first-child {
+    margin-bottom: 10px; /* Отступ между кнопками, если они расположены вертикально */
+}
+
+
+/* ---------------------------------------------------- */
+/* Стили для WAITINGPAGE */
+/* ---------------------------------------------------- */
+
+.waiting-page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.waiting-message {
+  /* Градиентный фон для карточки: от DarkSlateBlue до космического черного, как у форм */
+  background: linear-gradient(to bottom, #483D8B, #0d0c1d);
+  padding: 40px 30px; /* Отступы внутри формы */
+  border-radius: 20px; /* Закругленные углы */
+  /* Усиленное белое свечение */
+  box-shadow: 0 0 60px rgba(255, 255, 255, 0.4);
+  text-align: center;
+  width: 380px; /* Немного шире, чтобы вместить текст */
+  max-width: 90%; /* Максимальная ширина для адаптивности */
+  display: flex;
+  flex-direction: column; /* Элементы внутри стекаются вертикально */
+  box-sizing: border-box; /* Расчет ширины с учетом padding */
+  color: white; /* Дефолтный цвет текста внутри контейнера */
+}
+
+.waiting-message h2 {
+  color: white; /* Белый цвет для заголовка */
+  margin-bottom: 20px;
+  font-size: 2em;
+  font-weight: 600;
+}
+
+.waiting-message p {
+  color: white; /* Белый цвет для параграфов */
+  margin-bottom: 15px;
+  line-height: 1.5;
+  font-size: 1.05em;
+}
+
+/* Переопределяем цвет для сообщения об ошибке */
+.waiting-message .error-message {
+  color: #ff6b6b;
+  margin-top: 10px;
+  font-size: 1em;
+}
+
+/* Кнопка на странице ожидания (используем уже существующий .login-button, но для .waiting-page-wrapper) */
+.waiting-page-wrapper .login-button {
+  width: 100%; /* Занимает всю ширину */
+  padding: 15px; /* Внутренние отступы */
+  /* ГРАДИЕНТНЫЙ ФОН КНОПКИ: от DarkSlateBlue до Indigo */
+  background: linear-gradient(to bottom, #483D8B, #4B0082);
+  color: white; /* Цвет текста */
+  border: none; /* Без рамки */
+  border-radius: 8px; /* Закругленные углы */
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Плавный переход при наведении */
+  margin-top: 20px; /* Отступ сверху */
+  font-weight: 500;
+}
+
+.waiting-page-wrapper .login-button:hover:not(:disabled) {
+  /* ЧУТЬ БОЛЕЕ ТЕМНЫЙ ГРАДИЕНТ DarkSlateBlue до Indigo ПРИ НАВЕДЕНИИ */
+  background: linear-gradient(to bottom, #3A306F, #3C0068);
+}
+
+.waiting-page-wrapper .login-button:disabled {
+  background-color: #5b4b7a; /* Цвет для неактивной кнопки */
+  cursor: not-allowed;
+}
+
+
+/* ---------------------------------------------------- */
+/* НОВЫЕ СТИЛИ ДЛЯ MAINPAGE */
+/* ---------------------------------------------------- */
+
+.main-page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Выравнивание сверху, так как контента может быть много */
+  min-height: 100vh;
+  width: 100%;
+  padding: 20px; /* Отступы по бокам */
+  box-sizing: border-box; /* Важно для padding */
+}
+
+.main-content {
+  /* Градиентный фон для карточки: от DarkSlateBlue до космического черного, как у форм */
+  background: linear-gradient(to bottom, #483D8B, #0d0c1d);
+  padding: 40px 30px; /* Отступы внутри */
+  border-radius: 20px; /* Закругленные углы */
+  /* Усиленное белое свечение */
+  box-shadow: 0 0 60px rgba(255, 255, 255, 0.4);
+  width: 800px; /* Шире, чем формы, так как контента больше */
+  max-width: 100%; /* Адаптивность */
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  color: white; /* Дефолтный цвет текста */
+  text-align: left; /* Выравнивание текста по левому краю */
+}
+
+.main-content h2, .main-content h3 {
+  color: white;
+  margin-bottom: 20px;
+  text-align: center; /* Заголовки по центру */
+}
+
+.main-content h2 {
+  font-size: 2.2em;
+  font-weight: 600;
+}
+
+.main-content h3 {
+  font-size: 1.5em;
+  font-weight: 500;
+}
+
+.main-content p {
+  color: #e0e0e0; /* Светло-серый для параграфов */
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.language-selector {
+  display: flex;
+  gap: 10px; /* Отступ между кнопками */
+  margin-bottom: 20px;
+  justify-content: center; /* Центрирование кнопок */
+}
+
+.language-button {
+  padding: 10px 20px;
+  background: #3A306F; /* Темно-фиолетовый по умолчанию */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-size: 1em;
+  font-weight: 500;
+}
+
+.language-button:hover {
+  background: #4B0082; /* Более яркий при наведении */
+  transform: translateY(-2px);
+}
+
+.language-button.active {
+  background: linear-gradient(to bottom, #483D8B, #4B0082); /* Градиент как у основных кнопок */
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); /* Легкое свечение для активной */
+}
+
+.code-textarea {
+  width: 100%;
+  padding: 15px;
+  font-size: 1em;
+  font-family: 'Fira Code', 'monospace'; /* Можно использовать Fira Code или другую моноширинную */
+  background-color: #2b2b2b; /* Темный фон для кода */
+  color: #f8f8f2; /* Светлый текст для кода */
+  border: 1px solid #6272a4; /* Мягкая граница */
+  border-radius: 8px;
+  margin-bottom: 20px;
+  resize: vertical; /* Разрешить вертикальное изменение размера */
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.code-textarea:focus {
+  border-color: #8a4bff; /* Цвет при фокусе */
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3), 0 0 0 3px rgba(138, 75, 255, 0.5);
+}
+
+
+.action-button {
+  width: auto; /* Ширина по контенту */
+  padding: 15px 30px;
+  /* ГРАДИЕНТНЫЙ ФОН: как у основных кнопок */
+  background: linear-gradient(to bottom, #483D8B, #4B0082);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 500;
+  align-self: center; /* Центрирование кнопки */
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.action-button:hover:not(:disabled) {
+  background: linear-gradient(to bottom, #3A306F, #3C0068);
+  transform: translateY(-2px);
+}
+
+.action-button:disabled {
+  background-color: #5b4b7a; /* Цвет для неактивной кнопки */
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+}
+
+.section-divider {
+  margin: 30px 0;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.2); /* Светлая линия */
+}
+
+.zip-upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Центрирование элементов */
+  margin-bottom: 20px;
+  gap: 15px; /* Отступ между элементами */
+}
+
+.zip-upload-input-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Для переноса элементов на новую строку на маленьких экранах */
+    justify-content: center; /* Центрирование элементов */
+    gap: 10px; /* Отступ между элементами */
+}
+
+/* Стилизация input type="file" сложна и зависит от браузера.
+   Часто скрывают стандартный инпут и стилизуют label.
+   Здесь мы просто зададим базовые стили для видимого инпута */
+.zip-file-input {
+  background-color: #3A306F;
+  color: white;
+  border: 1px solid #6272a4;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 1em;
+  cursor: pointer;
+  max-width: 100%; /* Чтобы не выходить за пределы родителя */
+}
+
+.zip-file-name {
+  font-weight: bold;
+  color: #61dafb; /* Цвет акцента для имени файла */
+}
+
+.upload-zip-button {
+  padding: 10px 20px;
+  background: linear-gradient(to bottom, #FFD700, #DAA520); /* Золотой/желтый градиент */
+  color: #333; /* Темный текст для контраста */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 600;
+  font-size: 1em;
+}
+
+.upload-zip-button:hover:not(:disabled) {
+  background: linear-gradient(to bottom, #FFC107, #FF8C00); /* Более интенсивный желтый */
+  transform: translateY(-2px);
+}
+
+.upload-zip-button:disabled {
+  background: #a0a0a0; /* Серый для неактивной */
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none;
+}
+
+.json-output-container {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.json-output-pre {
+  background-color: #2b2b2b; /* Темный фон для кода */
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #6272a4; /* Мягкая граница */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 300px;
+  overflow-y: auto;
+  color: #f8f8f2; /* Светлый текст */
+  font-family: 'Fira Code', 'monospace';
+  font-size: 0.95em;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Кнопка "Выйти" */
+.logout-button {
+  width: auto;
+  padding: 15px 30px;
+  background: linear-gradient(to bottom, #dc3545, #8B0000); /* Красный градиент */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-weight: 500;
+  align-self: center; /* Центрирование кнопки */
+  margin-top: 30px;
+}
+
+.logout-button:hover {
+  background: linear-gradient(to bottom, #c82333, #6a0000); /* Более темный красный */
+  transform: translateY(-2px);
+}
